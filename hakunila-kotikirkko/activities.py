@@ -30,6 +30,7 @@ def init_db():
                     introduction TEXT
                 )
             ''')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_name_time_iso ON activities (name, time_iso)')
             conn.commit()
         print('successfully created the database')
     except Exception as e:
@@ -38,22 +39,19 @@ def init_db():
 
 # 2. Add activity
 def add_activity(name, fi_time, time_iso, author,introduction):
-    conn = 1
     try:
-        conn = sqlite3.connect('activities.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-                       INSERT INTO activities (name, fi_time, time_iso, author,introduction)
-                       VALUES (?, ?, ?, ?)
-                       ''', (name, fi_time, time_iso, author, introduction))
-        conn.commit()
-        return{'success':True,'message':f'{name} is added to the database'}
+        with sqlite3.connect('activities.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                           INSERT INTO activities (name, fi_time, time_iso, author,introduction)
+                           VALUES (?, ?, ?, ?,?)
+                           ''', (name, fi_time, time_iso, author, introduction))
+            conn.commit()
+            return{'success':True,'message':f'{name} is added to the database'}
     except Exception as e:
         print(e)
         logging.error(f"add_activity error:\n",e)
-    finally:
-        if conn != 1:
-            conn.close()
+
 
 # 3. Get all activities sorted by time
 def get_activities():

@@ -1,0 +1,27 @@
+Hakunilan-kotikirkkon-website
+(ok the project name is not good prr)
+Custemer needs:
+1.	A website that can show there all activities, and also can show who they are, and maybe can make youngs be intrest of them
+2.	the admin can change all activities also add img's/video without programming.
+
+
+
+Architecture:
+plan-1:
+Path: ‘/’ contains simple introduce and by click: read/learn more the user will arrive the sitemap(which contains all the path)
+sitemap will contains for example /activities which will show all the information and activity plans, /who_we_are will show the all information of ‘Hakunilan kotikirkkon’,
+/contact_us are planned show for example the church’s phonenumber,Email
+And also /admin/login.
+And the page about administractors back-end is already wrote.
+Plan-2:
+The ‘/’ contains automatically all sitemap by clicking button the user can arrive other paths
+Plan-3
+(I think this is the best plan but my front-end is so bad so its hard for me fortunately we have pro on the front-end)
+The all paths top or beside contains sitemap which is simple to arrive other paths.
+(bro I believe u)
+Otherthings:
+Of course we can add or change the content, so please say if u have any ideas
+
+Problem
+I know it heard so stupid but I don’t wanna do the add img's/video without programming.
+Because I know u are on ctf/cybersecurity the file upload is so hard to protect/prevent maybe I can use the pillow but…I don’t like system that is unsafe
