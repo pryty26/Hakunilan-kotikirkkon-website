@@ -1,5 +1,6 @@
+print("author: yang/pryty26(back-end)\nWearTime(front-end)"
+      "Voltex(this guy has been slacking off at working!!!)\n(>w<)")
 import html
-print("author: yang/pryty26(back-end)\nWearTime(front-end)\nVoltex(this guy has been slacking off at working!!!)\n(>w<)")
 import os
 import time
 import logging
@@ -268,7 +269,7 @@ def api_del_file_page():
         filename = request.form.get("filename")
         if not filename:
             return jsonify({'success': False, 'message': "please fill filename"})
-        return api_file_remove(filename=filename, UPLOAD_FOLDER=upload_folder):
+        return api_file_remove(filename=filename, UPLOAD_FOLDER=upload_folder)
     return jsonify({'success': False, 'message': "Please use POST method~", 'easter_egg': 'Hello!do u know! whose are the most handsome?'})
 
 

@@ -9,6 +9,7 @@ import base64
 def create_safe_preview(filepath, max_dimension=800, quality=85):
 
     try:
+
         img = Image.open(filepath)
         original_size = img.size
         img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
