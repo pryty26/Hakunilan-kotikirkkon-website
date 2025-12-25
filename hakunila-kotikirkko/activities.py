@@ -27,7 +27,8 @@ def init_db():
                     fi_time TEXT,
                     time_iso TEXT,
                     author TEXT,
-                    introduction TEXT
+                    introduction TEXT,
+                    filename TEXT
                 )
             ''')
             conn.execute('CREATE INDEX IF NOT EXISTS idx_name_time_iso ON activities (name, time_iso)')
@@ -38,19 +39,21 @@ def init_db():
 
 
 # 2. Add activity
-def add_activity(name, fi_time, time_iso, author,introduction):
+def add_activity(name, fi_time, time_iso, author, introduction, filename):
     try:
+        if len(name) > 100:
+            return{'success':False,'message':f'name must be less than 100 characters'}
         with sqlite3.connect('activities.db') as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                           INSERT INTO activities (name, fi_time, time_iso, author,introduction)
-                           VALUES (?, ?, ?, ?,?)
-                           ''', (name, fi_time, time_iso, author, introduction))
+                           INSERT INTO activities (name, fi_time, time_iso, author,introduction, filename)
+                           VALUES (?, ?, ?, ?, ?, ?)
+                           ''', (name, fi_time, time_iso, author, introduction,filename))
             conn.commit()
             return{'success':True,'message':f'{name} is added to the database'}
     except Exception as e:
         print(e)
-        logging.error(f"add_activity error:\n",e)
+        logging.error(f"add_activity error:{e}\n")
 
 
 # 3. Get all activities sorted by time
@@ -60,7 +63,7 @@ def get_activities():
             cursor = conn.cursor()
 
             cursor.execute('''
-                           SELECT name, fi_time, time_iso, author, introduction
+                           SELECT name, fi_time, time_iso, author, introduction, filename
                            FROM activities
                            ORDER BY time_iso DESC
                            ''')
@@ -72,7 +75,8 @@ def get_activities():
                     'time': row[1],
                     'time_iso': row[2],
                     'author': html.escape(row[3]),
-                    'introduction': html.escape(row[4])
+                    'introduction': html.escape(row[4]),
+                    'filename': html.escape(row[5])
                 }
 
                 try:

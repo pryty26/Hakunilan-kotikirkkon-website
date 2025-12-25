@@ -44,28 +44,24 @@ def time_delay(start_time):
         pass
 
 def add_user(username:str, password:str)->dict[str,any]:
-    conn = None
     try:
-        conn = sqlite3.connect('all_data.db')
-        cursor = conn.cursor()
-        salt = secrets.token_hex(16)
-        add_hashed_password = hashlib.sha256((password + salt).encode()).hexdigest()
+        with sqlite3.connect('all_data.db') as conn:
+            cursor = conn.cursor()
+            salt = secrets.token_hex(16)
+            add_hashed_password = hashlib.sha256((password + salt).encode()).hexdigest()
 
-        cursor.execute(
-            "INSERT INTO users (name, salt, hashed_password) VALUES (?,?,?)",
-            (html.escape(username), salt , add_hashed_password)
-        )
-        conn.commit()
-        return {'success':True, 'message':'User added successfully'}
+            cursor.execute(
+                "INSERT INTO users (name, salt, hashed_password) VALUES (?,?,?)",
+                (html.escape(username), salt , add_hashed_password)
+            )
+            conn.commit()
+            return {'success':True, 'message':'User added successfully'}
     except sqlite3.IntegrityError:
         time.sleep(0.5)
         return {'success':False,'message':'Username already exist'}
     except Exception as e:
         logging.error(f'(add_user)register error:{e}')
         return {'success':False,'message':'error'}
-    finally:
-        if conn:
-            conn.close()
 
 def verify_the_password(username:str,password:str) -> dict[str, any]:
     try:
