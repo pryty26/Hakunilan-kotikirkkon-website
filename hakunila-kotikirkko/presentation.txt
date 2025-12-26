@@ -21,7 +21,12 @@ The all paths top or beside contains sitemap which is simple to arrive other pat
 (bro I believe u)
 Otherthings:
 Of course we can add or change the content, so please say if u have any ideas
-
+And the church has some weekly fixed activities:
+Monday: clock:09:00-aamurukous
+Thursday:clock13:00-ruokajakelu
+Thursday:clock 18:00-rukous- ja yhteysilta
+Sunday klo:12:00- seurakunta kokous, jossa myös musiikki lapsille pyhäkoulu
 Problem
 I know it heard so stupid but I don’t wanna do the add img's/video without programming.
 Because I know u are on ctf/cybersecurity the file upload is so hard to protect/prevent maybe I can use the pillow but…I don’t like system that is unsafe
+

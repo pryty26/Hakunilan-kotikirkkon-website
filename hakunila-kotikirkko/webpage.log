@@ -1,0 +1,57 @@
+2025-12-25 20:18:20,438 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.113:8080
+2025-12-25 20:18:20,439 - [33mPress CTRL+C to quit[0m
+2025-12-25 20:18:29,176 - Exception on / [GET]
+Traceback (most recent call last):
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask_limiter\_limits.py", line 326, in __inner
+    return cast(R, flask.current_app.ensure_sync(obj)(*a, **k))
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\programs\pycharm\projects\hakunila-kotikirkko\app.py", line 150, in web_home
+    return render_template('home.html')
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\programs\pycharm\projects\.venv\Lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: home.html
+2025-12-25 20:18:29,184 - 127.0.0.1 - - [25/Dec/2025 20:18:29] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-12-25 20:18:29,244 - 127.0.0.1 - - [25/Dec/2025 20:18:29] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-12-25 21:25:40,813 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.113:8080
+2025-12-25 21:25:40,813 - [33mPress CTRL+C to quit[0m
+2025-12-26 15:01:31,098 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.113:8080
+2025-12-26 15:01:31,099 - [33mPress CTRL+C to quit[0m
+2025-12-26 15:03:25,276 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.113:8080
+2025-12-26 15:03:25,276 - [33mPress CTRL+C to quit[0m

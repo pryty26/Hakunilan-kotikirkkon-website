@@ -2,7 +2,8 @@ import html
 import sqlite3
 from datetime import datetime, timedelta
 import logging
-
+from file_api import api_get_file_by_name
+from flask import jsonify
 def commonplace_text(word):
     #make user input better! exemple:
     #for example userinput = sql Attack_tools or Sql_attackTOOls ---> sqlattacktools
@@ -35,8 +36,8 @@ def init_db():
             conn.commit()
         print('successfully created the database')
     except Exception as e:
-        print(e)
-
+        logging.error(f"init_db error:{e}\n")
+        return {"success":False,'message':'system error'}
 
 # 2. Add activity
 def add_activity(name, fi_time, time_iso, author, introduction, filename):
@@ -52,11 +53,11 @@ def add_activity(name, fi_time, time_iso, author, introduction, filename):
             conn.commit()
             return{'success':True,'message':f'{name} is added to the database'}
     except Exception as e:
-        print(e)
         logging.error(f"add_activity error:{e}\n")
-
+        return {"success":False,'message':'system error'}
 
 # 3. Get all activities sorted by time
+
 def get_activities():
     try:
         with sqlite3.connect('activities.db') as conn:
@@ -69,14 +70,20 @@ def get_activities():
                            ''')
             now = datetime.now()
             activities = []
-            for row in cursor.fetchall():
+            all_act = cursor.fetchall()
+            if not all_act:
+                return {'success': False,'message':'Activities not found'}
+            for row in all_act:
+
+                result = api_get_file_by_name(filename=row[5], UPLOAD_FOLDER = '/uploads/').get_json()
                 activity = {
                     'name': html.escape(row[0]),
                     'time': row[1],
                     'time_iso': row[2],
                     'author': html.escape(row[3]),
                     'introduction': html.escape(row[4]),
-                    'filename': html.escape(row[5])
+                    'filename': html.escape(row[5]),
+                    'file_result':result
                 }
 
                 try:
@@ -97,8 +104,8 @@ def get_activities():
             return {'success':True,'message':activities}
     except Exception as e:
         print(e)
-        logging.error(f"get_activity error:\n",e)
-        return {'success':'error','message':'system error please try again later'}
+        logging.error(f"get_activity error:\n{e}")
+        return {'success': False,'message':'system error please try again later'}
 
 
 
@@ -123,8 +130,8 @@ def delete_activity(user_input,choice):
             return {'success':True,'message':deleted}
     except Exception as e:
         print(e)
-        logging.error(f"get_activity error:\n",e)
-        return {'success':'error','message':'system error please try again later'}
+        logging.error(f"get_activity error:\n{e}")
+        return {"success":False,'message':'system error'}
 
 
 
@@ -146,7 +153,8 @@ def del_act_by_time():
 
     except Exception as e:
         print(f"del_finished_activities error: {e}")
-        return {'success': False, 'message': 'System error'}
+        logging.error(f"del_finished activities error:{e}\n")
+        return {"success":False,'message':'system error'}
 
 
 init_db()

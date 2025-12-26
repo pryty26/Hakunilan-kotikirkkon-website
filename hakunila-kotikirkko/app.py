@@ -1,5 +1,5 @@
 print("author: yang/pryty26(back-end)\nWearTime(front-end)"
-      "Voltex(this guy has been slacking off at working!!!)\n(>w<)")
+      "Voltex(Our professional tea-maker&&this guy has been slacking off at working!!!)\n(>w<)")
 import html
 import os
 import time
@@ -8,7 +8,9 @@ import secrets
 from functools import wraps
 from logging.handlers import RotatingFileHandler
 import json
-from sign_up_and_in_and_check import *
+from sign_up_and_in_and_check import (
+    verify_the_password
+)
 from flask import (
     Flask,
     request,
@@ -20,10 +22,16 @@ from flask import (
 )
 import random
 from datetime import datetime
-from activities import *
+from activities import (
+    commonplace_text, del_act_by_time,
+    delete_activity,
+    api_get_file_by_name,
+    add_activity,
+    get_activities
+                        )
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from file_api import *
+from file_api import api_add_file, api_file_remove,api_return_all_file
 print("import successful")
 
 
@@ -69,16 +77,14 @@ def validate_csrf(token:str,token_name="csrf_token"):
     success = secrets.compare_digest(token, expected)
     return {'success':success}
 
-generate_api_token = generate_token('api_token')
-generate_csrf_token = generate_token('csrf_token')
-#don't ask me why i did that because... it looks beter
+
 
 @app.context_processor
 def inject_csrf():
     return {
-        "csrf_token": generate_csrf_token,
+        "csrf_token": generate_token('csrf_token'),
         "surprise_easter_egg":"eeh...surprise?",
-        "api_token": generate_api_token
+        "api_token":generate_token('api_token')
     }
 
 def token_protect(token_name="csrf_token"):
@@ -89,7 +95,7 @@ def token_protect(token_name="csrf_token"):
                 token = request.form.get(token_name)
                 result = validate_csrf(token=token,token_name=token_name)
                 if not result['success'] and result['message'] == 'token missing':
-                    return "I'm a teapot(WearTime, Yang/pryty26 and voltex is the most handsome)",426
+                    return "I\'m a teapot(WearTime, Yang/pryty26 and voltex is the most handsome)",426
                 elif not result['success']:
                     return "token is invalid or missing",403
             return f(*args, **kwargs)
@@ -257,7 +263,8 @@ def api_get_file_page():
         if commonplace_text(filename) in ['getall','getallname','kaikkinimet','kaikkinimi']:
             return api_return_all_file(UPLOAD_FOLDER='/uploads/')
         return api_get_file_by_name(UPLOAD_FOLDER='/uploads/',filename=filename)
-    return jsonify({'success': False, 'message': "Please use POST method~", 'easter_egg': 'Hello!do u know! whose are the most handsome?'})
+    return jsonify({'success': False, 'message': "Please use POST method~",
+                    'easter_egg': "I\'m a teapot(WearTime, Yang/pryty26 and voltex is the most handsome"})
 
 @app.route('/api/admin/del_file', methods=['GET', 'POST'])
 @admin_check
@@ -271,6 +278,15 @@ def api_del_file_page():
             return jsonify({'success': False, 'message': "please fill filename"})
         return api_file_remove(filename=filename, UPLOAD_FOLDER=upload_folder)
     return jsonify({'success': False, 'message': "Please use POST method~", 'easter_egg': 'Hello!do u know! whose are the most handsome?'})
+@app.route('/api/admin/get_act')
+@admin_check
+@api_protect
+@limiter.limit('50 per minute,600 per hour')
+def api_get_act():
+    if request.method == 'POST':
+        return jsonify(get_activities())
+    return jsonify({'success': False, 'message': "Please use POST method~",
+                    'easter_egg': ''})
 
 
 @app.route('/api/admin/add_file', methods=['GET', 'POST'])
@@ -318,3 +334,14 @@ def admin_change_activity_page():
                                    )
     return render_template('admin_add_activity.html',)
 
+
+def main():
+    port = int(os.environ.get("PORT", 8080))
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"Starting Flask app on \n{host}:{port}")
+    print(f"Starting Flask app on \nlocalhost:{port}")
+    app.run(host=host, port=port, debug=False)
+
+if __name__ == '__main__':
+    print('SERVER:ON')
+    main()
